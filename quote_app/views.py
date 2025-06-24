@@ -10,18 +10,16 @@ from rest_framework.views import APIView
 class quoteview(APIView):
     
     def get(self, request):
-        if request.method == 'GET':
-            quotes = Quote.objects.all()
-            serializer = QuoteSerializers(quotes, many=True)
-            return Response(serializer.data)
+        quotes = Quote.objects.all()
+        serializer = QuoteSerializers(quotes, many=True)
+        return Response(serializer.data)
         
     def post(self, request):
-            if request.method == 'POST':
-                serializer = QuoteSerializers(data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        serializer = QuoteSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         
 
